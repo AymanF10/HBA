@@ -363,6 +363,7 @@ cd frontend
 ```
 
 4. Start the development server:
+
 ```bash
 npm start
 ```
@@ -383,5 +384,6 @@ This script will automatically:
 - Install required polyfills
 - Create or verify config-overrides.js
 - Update package.json scripts if needed
+
 
 For more details, see the Frontend README in the frontend directory.
