@@ -1,0 +1,42 @@
+const webpack = require('webpack');
+const path = require('path');
+
+module.exports = function override(config) {
+  // Add fallbacks for Node.js core modules
+  const fallback = config.resolve.fallback || {};
+  Object.assign(fallback, {
+    "crypto": require.resolve("crypto-browserify"),
+    "stream": require.resolve("stream-browserify"),
+    "assert": require.resolve("assert"),
+    "http": require.resolve("stream-http"),
+    "https": require.resolve("https-browserify"),
+    "os": require.resolve("os-browserify"),
+    "url": require.resolve("url"),
+    "zlib": require.resolve("browserify-zlib"),
+    "path": require.resolve("path-browserify"),
+    "vm": require.resolve("vm-browserify"),
+    "fs": false,
+    "process": require.resolve("process/browser.js")
+  });
+  config.resolve.fallback = fallback;
+  
+  // Add aliases for process and buffer
+  config.resolve.alias = {
+    ...config.resolve.alias,
+    "process": "process/browser.js",
+    "buffer": "buffer"
+  };
+  
+  // Provide process and Buffer globally
+  config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      process: "process/browser.js",
+      Buffer: ["buffer", "Buffer"]
+    })
+  ]);
+  
+  // Ignore source map warnings
+  config.ignoreWarnings = [/Failed to parse source map/];
+  
+  return config;
+};
